@@ -3,6 +3,7 @@ from transformers import AutoTokenizer, DataCollatorWithPadding
 from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification
 from transformers import BertModel
+from transformers import BertForSequenceClassification
 from transformers import AdamW
 from transformers import get_scheduler
 import torch
@@ -19,7 +20,7 @@ for dset in glue_datasets:
         raw_datasets = load_dataset("glue", "mrpc")
         checkpoint = "bert-base-uncased"
         tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-        model = BertModel.from_pretrained(checkpoint)
+        model = BertForSequenceClassification.from_pretrained(checkpoint)
 
         def tokenize_function(example):
             return tokenizer(example["sentence1"], example["sentence2"], truncation=True)
@@ -41,7 +42,6 @@ for dset in glue_datasets:
         for batch in train_dataloader:
             break
         {k: v.shape for k, v in batch.items()}
-
 
         model = model
         outputs = model(**batch)
@@ -83,7 +83,8 @@ for dset in glue_datasets:
             predictions = torch.argmax(logits, dim=-1)
             metric.add_batch(predictions=predictions, references=batch["labels"])
 
-        metric.compute()
+        score = metric.compute()
+        print(score)
     '''elif dset == 'COLA':
     elif dset == 'SST2':
     elif dset == 'QQP':
