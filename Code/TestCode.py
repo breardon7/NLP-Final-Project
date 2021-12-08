@@ -10,17 +10,19 @@ import torch
 from tqdm.auto import tqdm
 from datasets import load_metric
 
-
-
+# Datasets
 glue_datasets = ['cola', 'sst2', 'mrpc', 'qqp', 'stsb', 'mnli', 'mnli_mismatched', 'mnli_matched', 'qnli', 'rte', 'wnli', 'ax']
+
+# Hyper parameters
 num_epochs = 3
-batch_size = 10
+batch_size = 30
 checkpoint = "bert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = RobertaForSequenceClassification.from_pretrained(checkpoint)
 
+# Task iterations
 for dset in glue_datasets:
-    if dset == 'mrpc':
+    if dset == 'skip_mrpc':
         raw_datasets = load_dataset("glue", "mrpc")
 
         def tokenize_function(example):
@@ -87,7 +89,7 @@ for dset in glue_datasets:
         score = metric.compute()
         print(score, 'mrpc')
 
-    elif dset == 'skip_rte':
+    elif dset == 'rte':
         raw_datasets = load_dataset("glue", "rte")
         print(raw_datasets)
         checkpoint = "bert-base-uncased"
@@ -158,9 +160,9 @@ for dset in glue_datasets:
             metric.add_batch(predictions=predictions, references=batch["labels"])
 
         score = metric.compute()
-        print(score)
+        print(score, 'rte')
 
-    elif dset == 'skip_wnli':
+    elif dset == 'wnli':
         raw_datasets = load_dataset("glue", "wnli")
         print(raw_datasets)
         checkpoint = "bert-base-uncased"
@@ -231,9 +233,9 @@ for dset in glue_datasets:
             metric.add_batch(predictions=predictions, references=batch["labels"])
 
         score = metric.compute()
-        print(score)
+        print(score, 'wnli')
 
-    elif dset == 'skip_sst2':
+    elif dset == 'sst2':
         raw_datasets = load_dataset("glue", "sst2")
         print(raw_datasets)
         checkpoint = "bert-base-uncased"
@@ -303,7 +305,7 @@ for dset in glue_datasets:
             predictions = torch.argmax(logits, dim=-1)
             metric.add_batch(predictions=predictions, references=batch["labels"])
         score = metric.compute()
-        print(score)
+        print(score, 'sst2')
 
     '''
     elif dset == 'cola': Rohan
@@ -312,3 +314,4 @@ for dset in glue_datasets:
     elif dset == 'mnli': Nigel
     elif dset == 'qnli': JC
     elif: # ax
+    '''
