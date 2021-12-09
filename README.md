@@ -13,4 +13,4 @@ Our project objective was to work on 9 tasks within The General Language Underst
 ## Code Execution
 1. Download the dataset for each task from https://gluebenchmark.com/tasks
 2. In the code folder, for each task the train file is named as 'train_taskname.py'.
-3. For each task, make sure the train, validation and test .tsv files are in the same directory as the train.py file.
+3. For each task, make sure the train, validation and test .tsv files are in the same directory as the train.py file. Do not change the name for any of the .tsv files.
