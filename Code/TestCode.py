@@ -14,15 +14,15 @@ from datasets import load_metric
 glue_datasets = ['cola', 'sst2', 'mrpc', 'qqp', 'stsb', 'mnli', 'mnli_mismatched', 'mnli_matched', 'qnli', 'rte', 'wnli', 'ax']
 
 # Hyper parameters
-num_epochs = 3
-batch_size = 30
+num_epochs = 10
+batch_size = 80
 checkpoint = "bert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = RobertaForSequenceClassification.from_pretrained(checkpoint)
 
 # Task iterations
 for dset in glue_datasets:
-    if dset == 'skip_mrpc':
+    if dset == 'mrpc':
         raw_datasets = load_dataset("glue", "mrpc")
 
         def tokenize_function(example):
